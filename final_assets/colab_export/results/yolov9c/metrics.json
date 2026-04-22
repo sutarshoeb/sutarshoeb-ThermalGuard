@@ -1,0 +1,8 @@
+{
+  "metrics/precision(B)": 0.7727917225724346,
+  "metrics/recall(B)": 0.5583288481110926,
+  "metrics/mAP50(B)": 0.6518404765751618,
+  "metrics/mAP50-95(B)": 0.4021702802039358,
+  "fitness": 0.4021702802039358,
+  "model": "yolov9c"
+}

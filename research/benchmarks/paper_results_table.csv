@@ -1,0 +1,5 @@
+Model,Type,mAP50,mAP50-95,Precision,Recall,Params (M),FPS (GPU)
+rtdetr_l,Transformer,0.7079,0.4928,0.797,0.6527,32.8,67.2
+yolov8s,CNN (Baseline),0.657,0.3957,0.7735,0.5645,11.1,82.7
+yolov9c,CNN + PGI,0.6518,0.4022,0.7728,0.5583,25.5,75.4
+inception_yolov8,Multi-Scale CNN (Ours),0.6388,0.3816,0.7445,0.5639,55.8,80.3

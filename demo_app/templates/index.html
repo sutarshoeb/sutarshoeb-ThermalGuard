@@ -1,0 +1,287 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="shell">
+    <section class="topbar">
+        <div class="brand-lockup">
+            <span class="brand-mark"></span>
+            <div>
+                <p class="eyebrow">Thermal Vision Suite</p>
+                <strong>Wildlife Detection Prototype</strong>
+            </div>
+        </div>
+        <div class="stack-row">
+            <span class="stack-chip">Flask</span>
+            <span class="stack-chip">Ultralytics</span>
+            <span class="stack-chip">YOLOv8s</span>
+            <span class="stack-chip">RT-DETR-L</span>
+            <span class="stack-chip">Synthetic Thermal</span>
+        </div>
+    </section>
+
+    <section class="hero">
+        <div class="hero-copy">
+            <p class="eyebrow">Research Prototype</p>
+            <h1>Thermal Animal Detection</h1>
+            <p class="lede">
+                A cinematic demonstration of your synthetic thermal pipeline, benchmarked detectors,
+                and road-safety inference workflow for low-visibility animal detection.
+            </p>
+            <div class="hero-actions">
+                <a class="ghost-btn" href="#demo-lab">Open Demo Lab</a>
+                <a class="ghost-btn ghost-btn-dark" href="#comparison-suite">View Model Suite</a>
+            </div>
+            <div class="hero-metrics">
+                <div class="metric-tile">
+                    <span>Primary Demo Angle</span>
+                    <strong>Visible to Thermal to Detection</strong>
+                </div>
+                <div class="metric-tile">
+                    <span>Best Accuracy</span>
+                    <strong>RT-DETR-L</strong>
+                </div>
+                <div class="metric-tile">
+                    <span>Fastest Candidate</span>
+                    <strong>YOLOv8s</strong>
+                </div>
+            </div>
+        </div>
+        <div class="hero-panel">
+            <div class="panel-glow"></div>
+            <div class="hero-radar">
+                <div class="radar-ring ring-one"></div>
+                <div class="radar-ring ring-two"></div>
+                <div class="radar-ring ring-three"></div>
+                <div class="scan-line"></div>
+                <div class="hotspot hotspot-one"></div>
+                <div class="hotspot hotspot-two"></div>
+                <div class="hotspot hotspot-three"></div>
+            </div>
+            <div class="hero-card hero-card-floating">
+                <p class="hero-card-label">Detection Narrative</p>
+                <h2>From visible imagery to thermal-style intelligence.</h2>
+                <ol>
+                    <li>Upload a visible or thermal frame</li>
+                    <li>Preview synthetic thermal generation</li>
+                    <li>Run multi-model inference in parallel</li>
+                    <li>Compare detections, speed, and confidence</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <section class="grid-two" id="demo-lab">
+        <article class="panel panel-form">
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">Interactive Demo</p>
+                    <h2>Run The Demo</h2>
+                </div>
+            </div>
+            <form action="{{ url_for('analyze') }}" method="post" enctype="multipart/form-data" class="demo-form">
+                <label class="field">
+                    <span>Image Type</span>
+                    <select name="source_type">
+                        <option value="visible">Visible image</option>
+                        <option value="thermal">Thermal image</option>
+                    </select>
+                </label>
+
+                <label class="field">
+                    <span>Upload Frame</span>
+                    <input type="file" name="image" accept=".jpg,.jpeg,.png,.bmp,.tif,.tiff" required>
+                </label>
+
+                <fieldset class="field">
+                    <legend>Models To Compare</legend>
+                    <div class="checkbox-grid">
+                        {% for key, meta in model_registry.items() %}
+                        <label class="checkbox-tile">
+                            <input type="checkbox" name="models" value="{{ key }}" checked>
+                            <span>{{ meta.label }}</span>
+                            <small>{{ meta.family }}</small>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </fieldset>
+
+                <button type="submit" class="primary-btn">Analyze Frame</button>
+            </form>
+
+            {% if error %}
+            <p class="error">{{ error }}</p>
+            {% endif %}
+        </article>
+
+        <article class="panel mission-panel">
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">Project Framing</p>
+                    <h2>Why This Demo Matters</h2>
+                </div>
+            </div>
+            <div class="mission-grid">
+                <div class="mission-card">
+                    <span class="mission-index">01</span>
+                    <h3>Dataset Story</h3>
+                    <p>Shows the exact visible-to-synthetic-thermal path behind your data preparation work.</p>
+                </div>
+                <div class="mission-card">
+                    <span class="mission-index">02</span>
+                    <h3>Model Comparison</h3>
+                    <p>Lets different detectors respond to the same frame so performance tradeoffs become visible.</p>
+                </div>
+                <div class="mission-card">
+                    <span class="mission-index">03</span>
+                    <h3>Prototype Value</h3>
+                    <p>Connects research outputs to an interface that feels closer to a deployable product demo.</p>
+                </div>
+                <div class="mission-card">
+                    <span class="mission-index">04</span>
+                    <h3>Edge Narrative</h3>
+                    <p>Supports a future edge-device story without pretending the current build is the final product.</p>
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <section class="panel">
+        <div class="section-head">
+            <div>
+                <p class="section-kicker">Benchmark Intelligence</p>
+                <h2>Benchmark Snapshot</h2>
+            </div>
+        </div>
+        <div class="benchmark-grid">
+            {% for row in benchmarks %}
+            <article class="benchmark-card">
+                <div class="benchmark-topline">
+                    <p class="benchmark-title">{{ row["Model"] }}</p>
+                    <span class="benchmark-badge">{{ row["Type"] }}</span>
+                </div>
+                <dl>
+                    <div><dt>mAP50</dt><dd>{{ row["mAP50"] }}</dd></div>
+                    <div><dt>mAP50-95</dt><dd>{{ row["mAP50-95"] }}</dd></div>
+                    <div><dt>Precision</dt><dd>{{ row["Precision"] }}</dd></div>
+                    <div><dt>Recall</dt><dd>{{ row["Recall"] }}</dd></div>
+                    <div><dt>FPS</dt><dd>{{ row["FPS (GPU)"] }}</dd></div>
+                </dl>
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+
+    {% if result %}
+    <section class="panel">
+        <div class="section-head">
+            <div>
+                <p class="section-kicker">Thermal Transformation</p>
+                <h2>Input And Pipeline</h2>
+            </div>
+        </div>
+        <div class="image-grid">
+            <article class="image-card">
+                <h3>Uploaded Frame</h3>
+                <img src="{{ result.uploaded_url }}" alt="Uploaded frame">
+            </article>
+            <article class="image-card">
+                <h3>Pipeline Preview</h3>
+                <img src="{{ result.pipeline_preview_url }}" alt="Pipeline preview">
+            </article>
+            <article class="image-card">
+                <h3>Inference Frame</h3>
+                <img src="{{ result.inference_url }}" alt="Inference frame">
+            </article>
+        </div>
+
+        {% if result.pipeline_views %}
+        <div class="pipeline-strip">
+            {% for stage in result.pipeline_views %}
+            <article class="pipeline-stage">
+                <img src="{{ stage.url }}" alt="{{ stage.title }}">
+                <h3>{{ stage.title }}</h3>
+                <p>{{ stage.description }}</p>
+            </article>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </section>
+
+    <section class="panel" id="comparison-suite">
+        <div class="section-head">
+            <div>
+                <p class="section-kicker">Inference Suite</p>
+                <h2>Model Comparison</h2>
+            </div>
+        </div>
+        {% if result.summary %}
+        <div class="summary-grid">
+            <article class="summary-card">
+                <span>Fastest On This Run</span>
+                <strong>{{ result.summary.fastest.label if result.summary.fastest else "N/A" }}</strong>
+                <p>
+                    {% if result.summary.fastest %}
+                    {{ result.summary.fastest.elapsed_ms }} ms
+                    {% else %}
+                    No successful inference yet.
+                    {% endif %}
+                </p>
+            </article>
+            <article class="summary-card">
+                <span>Most Detections</span>
+                <strong>{{ result.summary.most_detections.label if result.summary.most_detections else "N/A" }}</strong>
+                <p>
+                    {% if result.summary.most_detections %}
+                    {{ result.summary.most_detections.detection_count }} detections
+                    {% else %}
+                    No successful inference yet.
+                    {% endif %}
+                </p>
+            </article>
+            <article class="summary-card">
+                <span>Demo Recommendation</span>
+                <strong>{{ result.summary.recommended_demo_model }}</strong>
+                <p>Best balance for speed-focused presentation.</p>
+            </article>
+            <article class="summary-card">
+                <span>Accuracy Recommendation</span>
+                <strong>{{ result.summary.recommended_accuracy_model }}</strong>
+                <p>Best benchmark leader for research framing.</p>
+            </article>
+        </div>
+        {% endif %}
+        <div class="comparison-grid">
+            {% for item in result.model_results %}
+            <article class="result-card">
+                <div class="result-header">
+                    <div>
+                        <h3>{{ item.label }}</h3>
+                        <p>{{ item.family }}</p>
+                    </div>
+                    {% if item.available %}
+                    <span class="pill">{{ item.elapsed_ms }} ms</span>
+                    {% else %}
+                    <span class="pill pill-warn">Unavailable</span>
+                    {% endif %}
+                </div>
+
+                {% if item.available %}
+                <img src="{{ item.image_url }}" alt="{{ item.label }} result">
+                <div class="result-stats">
+                    <span>{{ item.detection_count }} detections</span>
+                    <span>{{ item.elapsed_ms }} ms</span>
+                </div>
+                <ul class="detection-list">
+                    {% for detection in item.detections[:5] %}
+                    <li>{{ detection.class_name }} · {{ detection.confidence }}</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="error">{{ item.message }}</p>
+                {% endif %}
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+</main>
+{% endblock %}

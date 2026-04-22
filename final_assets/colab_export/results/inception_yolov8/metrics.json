@@ -1,0 +1,8 @@
+{
+  "metrics/precision(B)": 0.7444851581788757,
+  "metrics/recall(B)": 0.5639307649357901,
+  "metrics/mAP50(B)": 0.6387931915926255,
+  "metrics/mAP50-95(B)": 0.38158029978482666,
+  "fitness": 0.38158029978482666,
+  "model": "inception_yolov8"
+}
