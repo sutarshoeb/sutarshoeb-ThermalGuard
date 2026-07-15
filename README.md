@@ -321,3 +321,12 @@ The repository is now in a strong transition state:
 - preserved enough to keep your earlier training and experiment history
 
 The next recommended step is to keep refining the Flask app and then do a final GitHub-facing cleanup pass for screenshots, setup polish, and public-sharing guidance.
+
+
+## License
+
+ThermalGuard is released under the MIT License.
+
+Copyright © 2026 Kupakwashe T. Mapuranga, Shoeb Shakil Sutar, and Archana Y. Chaudhari.
+
+See the [LICENSE](LICENSE) file for full license details.
